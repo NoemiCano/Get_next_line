@@ -6,7 +6,7 @@
 /*   By: ncano-co <ncano-co@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 11:56:21 by ncano-co          #+#    #+#             */
-/*   Updated: 2026/11/17 17:25:16 by ncano-co         ###   ########.fr       */
+/*   Updated: 2026/11/17 17:53:10 by ncano-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,39 @@
 
 # include "get_next_line.h"
 
-char read_file(int fd, char *remaining)
+static char *read_file(int fd, char *remaining)
 {
+	char	*buf;
+	ssize_t	nbytes;
+
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
+		return (NULL);
+	while (!ft_strchr(remaining, '\n'))
+	{
+		nbytes = read(fd, buf, BUFFER_SIZE);
+		if (nbytes == 0)
+			break ;
+		if (nbytes == -1)
+		{
+			free(buf);
+			return (NULL);
+		}
+		buf[nbytes] = '\0';
+		remaining = ft_strjoin(remaining, buf);
+	}
+	free(buf);
+	return (remaining);
 }
 
-char *extract_line(char *remaining)
+static char *extract_line(char *remaining)
 {
+	//Extraemos desde el principio de remaining hasta el primer salto de línea.
 }
 
-char update_remaining(char *remaining)
+static char *update_remaining(char *remaining)
 {
+	// Actualizamos remaining para que contenga lo que queda después de la línea extraída. Esto implica mover el puntero de remaining más allá del primer salto de línea y liberar la memoria de la parte anterior.
 }
 
 char *get_next_line(int fd)
