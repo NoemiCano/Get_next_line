@@ -3,13 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncano-co <ncano-co@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncano-co <ncano-co@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 11:56:25 by ncano-co          #+#    #+#             */
-/*   Updated: 2026/11/11 12:59:44 by ncano-co         ###   ########.fr       */
+/*   Updated: 2026/11/17 13:00:23 by ncano-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Hay que definir el buffer_size que vamos a tener (debemos tener uno por defecto o usar el que nos pasen por consola)
-// read() nos va a devolver el numero de bytes leidos y el indicador de posición del fichero debe avanzar ese número de bytes
-// Debe leer linea a linea y devolverlas una a una. La linea devuelta debe terminar con el \n exepto si ha llegado al final del archivo
+# include "get_next_line.h"
+
+size_t	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if ((unsigned char)s[i] == (unsigned char)c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if ((unsigned char)c == '\0')
+		return ((char *)&s[i]);
+	return (NULL);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	s1_len;
+	size_t	s2_len;
+	char	*str;
+
+	s1_len = ft_strlen((char *)s1);
+	s2_len = ft_strlen((char *)s2);
+	str = malloc(sizeof(char) * (s1_len + s2_len) + 1);
+	if (!str)
+		return (NULL);
+	ft_memmove(str, s1, s1_len);
+	ft_memmove(str + s1_len, s2, s2_len);
+	str[s1_len + s2_len] = '\0';
+	return (str);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*str;
+	size_t	i;
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
